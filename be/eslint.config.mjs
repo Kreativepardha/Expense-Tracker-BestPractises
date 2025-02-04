@@ -8,12 +8,12 @@ export default tseslint.config({
     languageOptions: {
         parserOptions: {
             project: true,
-            tsconfigRootDir: import.meta.dirname,
+            tsconfigRootDir: import.meta.dirname
         }
     },
     files: ['**/*.ts'],
     extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
-    rules: { 
+    rules: {
         'no-console': 'error',
         'no-useless-catch': 0,
         quotes: ['error', 'single', { allowTemplateLiterals: true }]
