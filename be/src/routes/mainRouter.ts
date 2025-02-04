@@ -5,7 +5,7 @@ import { expenseRoute } from './expenseRouter'
 
 const router = Router()
 
-router.use('/user', userRoute)
+router.use('/auth', userRoute)
 router.use('/expenses', expenseRoute)
 
 export { router as mainRouter }

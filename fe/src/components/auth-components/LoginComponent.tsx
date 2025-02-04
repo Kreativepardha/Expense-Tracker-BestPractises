@@ -28,15 +28,17 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <h2 className="text-xl font-bold">Login</h2>
+    <div className="flex justify-center items-center bg-slate-900/80 h-screen">
+    <div className="max-w-md mx-auto p-6 bg-white border">
+      <h2 className="text-3xl font-extrabold">Login</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input type="email" placeholder="Email" {...register("email")} />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
         <Input type="password" placeholder="Password" {...register("password")} />
         {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-        <Button type="submit">Login</Button>
+        <Button type="submit" className="bg-slate-300">Login</Button>
       </form>
     </div>
+  </div>
   );
 }

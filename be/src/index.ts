@@ -24,7 +24,7 @@ app.use(
     })
 )
 app.use(express.json())
-app.use(rateLimitMiddleware)
+// app.use(rateLimitMiddleware)
 app.use(errorHandler)
 app.use('/api/v1', mainRouter)
 
