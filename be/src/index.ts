@@ -3,6 +3,9 @@ import { config } from './config/config'
 import { mainRouter } from './routes/mainRouter'
 import helmet from 'helmet'
 import cors from 'cors'
+import logger from './utils/logger'
+import { errorHandler } from './utils/errorHandler'
+import { rateLimitMiddleware } from './middlewares/authMiddleware'
 
 const app: Application = express()
 
@@ -15,9 +18,10 @@ app.use(
     })
 )
 app.use(express.json())
-
+app.use(rateLimitMiddleware)
+app.use(errorHandler)
 app.use('/api/v1', mainRouter)
 
 app.listen(config.PORT, () => {
-    // logger.info('sever running on port::')
+    logger.info(`sever running on port::${config.PORT}`)
 })

@@ -1,11 +1,13 @@
 import mongoose from 'mongoose'
 import { config } from './config'
+import logger from '../utils/logger'
 
-const connectDB = async () => {
+export const connectDB = async () => {
     try {
         await mongoose.connect(config.DB_URL as string)
-        // logger.info('mooa)
+        logger.info('MongoDb is cponnected')
     } catch (err) {
-        // logger.error
+        logger.error('Error connecting to MongoDb', err)
+        process.exit(1);
     }
 }

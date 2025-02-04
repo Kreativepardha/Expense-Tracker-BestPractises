@@ -20,18 +20,18 @@ export const initRateLimiter = (mongooseConnection: Connection) => {
         blockDuration: BLOCK_DURATION
     })
     // logger.info("Rate limiter initialized")
+}
 
-    const checkRateLimit = async (ip: string): Promise<boolean> => {
-        if (!rateLimiterMongo) {
-            throw new Error('Rate limit not initialized. Call initRatelimiter first.')
-        }
+export const checkRateLimit = async (ip: string): Promise<boolean> => {
+    if (!rateLimiterMongo) {
+        throw new Error('Rate limit not initialized. Call initRatelimiter first.')
+    }
 
-        try {
-            await rateLimiterMongo.consume(ip)
-            return true
-        } catch (er) {
-            // logger.warn('rate limiter exceeedded')
-            return false
-        }
+    try {
+        await rateLimiterMongo.consume(ip)
+        return true
+    } catch (er) {
+        // logger.warn('rate limiter exceeedded')
+        return false
     }
 }
