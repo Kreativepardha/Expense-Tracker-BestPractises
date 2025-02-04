@@ -1,5 +1,4 @@
 import util from 'util'
-import 'winston-mongodb'
 import { createLogger, format, transports } from 'winston'
 import * as sourceMapSupport from 'source-map-support'
 import { red, blue, yellow, green, magenta } from 'colorette'
@@ -35,7 +34,7 @@ const consoleLogFormat = format.printf((info) => {
         colors: true
     })
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    return `${customLevel} [${customTimestamp}] ${customMessage}\n${magenta('META')} ${customMeta}\n`
+    return `${customLevel} [${customTimestamp}] ${customMessage}\n`
 })
 
 const logger = createLogger({
@@ -46,14 +45,6 @@ const logger = createLogger({
     transports: [
         new transports.Console({
             format: format.combine(format.timestamp(), format.colorize(), consoleLogFormat)
-        }),
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        new transports.MongoDB({
-            db: config.DB_URL,
-            collection: 'logs',
-            options: { useUnifiedTopology: true },
-            level: 'info',
-            format: format.combine(format.timestamp(), format.json())
         })
     ]
 })

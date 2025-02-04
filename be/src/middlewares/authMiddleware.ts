@@ -23,6 +23,7 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
             })
         }
 
+        ///
         req.user = decoded as AuthenticatedUser
         next()
     })

@@ -1,4 +1,4 @@
-import express, { Application } from 'express'
+import express from 'express'
 import { config } from './config/config'
 import { mainRouter } from './routes/mainRouter'
 import helmet from 'helmet'
@@ -7,8 +7,11 @@ import logger from './utils/logger'
 import { errorHandler } from './utils/errorHandler'
 import { rateLimitMiddleware } from './middlewares/authMiddleware'
 import { connectDB } from './config/dbConfig'
+import dotenv from 'dotenv'
 
-const app: Application = express()
+dotenv.config()
+
+const app = express()
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 connectDB()
 

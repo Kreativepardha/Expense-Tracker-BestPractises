@@ -4,8 +4,15 @@ import logger from '../utils/logger'
 
 export const connectDB = async () => {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const conn = await mongoose.connect(config.DB_URL as string)
+        const dburl = config.DB_URL
+        if (!dburl) {
+            throw new Error('DB_URL is not defined in the environment variables')
+        }
+
+        await mongoose
+            .connect(dburl)
+            .then(() => logger.info('connected to db'))
+            .catch((err) => logger.info(err))
         logger.info('MongoDb is cponnected')
     } catch (err) {
         logger.error('Error connecting to MongoDb', err)

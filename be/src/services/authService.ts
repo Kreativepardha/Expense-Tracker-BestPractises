@@ -25,8 +25,8 @@ export const registerService = async (data: RegisterData) => {
     const user = new User({ firstName, lastName, email, password: hashedPass })
     await user.save()
 
-    const accessToken = generateToken(user._id)
-    const refreshToken = generateRefreshToken(user._id)
+    const accessToken = generateToken(user._id.toString())
+    const refreshToken = generateRefreshToken(user._id.toString())
 
     return { message: 'User registered successfully', accessToken, refreshToken }
 }
@@ -39,12 +39,13 @@ export const loginService = async (data: LoginData) => {
     const isMatch = bcrypt.compareSync(password, existingUser.password)
     if (!isMatch) throw new CustomError('invalid credentials', 400)
 
-    const accessToken = generateToken(existingUser._id)
-    const refreshToken = generateRefreshToken(existingUser._id)
+    const accessToken = generateToken(existingUser._id.toString())
+    const refreshToken = generateRefreshToken(existingUser._id.toString())
 
     return { accessToken, refreshToken }
 }
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export const logoutService = async () => {
     return {
         message: 'User LOgged Out'
