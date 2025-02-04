@@ -40,7 +40,7 @@ export const useExpenseStore = create<ExpenseState>((set, get) => ({
 
   addExpense: async (expense) => {
     const res = await api.post("/expenses", expense);
-    set({ expenses: [...get().expenses, res.data.expense] });
+    set({ expenses: [...get().expenses, res.data] });
   },
 
   updateExpense: async (id, updatedExpense) => {
