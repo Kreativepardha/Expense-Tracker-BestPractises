@@ -9,9 +9,16 @@ interface Expense {
   description?: string;
 }
 
+interface Insight {
+  _id: string; // Category name or another grouping key
+  total: number; // Total amount spent in that category
+}
+
 interface ExpenseState {
   expenses: Expense[];
+  insights: Insight[];
   fetchExpenses: (filters: { category: string; startDate: string; endDate: string }) => Promise<void>;
+  fetchInsights: (filters: { category: string; startDate: string; endDate: string }) => Promise<void>;
   addExpense: (expense: Omit<Expense, "_id">) => Promise<void>;
   updateExpense: (id: string, updatedExpense: Partial<Expense>) => Promise<void>;
   deleteExpense: (id: string) => Promise<void>;
@@ -19,10 +26,16 @@ interface ExpenseState {
 
 export const useExpenseStore = create<ExpenseState>((set, get) => ({
   expenses: [],
+  insights: [],
 
   fetchExpenses: async (filters = { category: "", startDate: "", endDate: "" }) => {
     const res = await api.get("/expenses", { params: filters });
     set({ expenses: res.data.expenses });
+  },
+
+  fetchInsights: async (filters = { category: "", startDate: "", endDate: "" }) => {
+    const res = await api.get("/insights", { params: filters }); // Make sure your backend has an `/insights` endpoint
+    set({ insights: res.data.insights });
   },
 
   addExpense: async (expense) => {

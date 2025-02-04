@@ -10,7 +10,7 @@ export default function Insights() {
 
   useEffect(() => {
     fetchInsights(filters);
-  }, [filters]);
+  }, [filters, fetchInsights]);
 
   const COLORS = ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#9966FF"];
 
@@ -29,26 +29,34 @@ export default function Insights() {
         {/* Pie Chart */}
         <Card>
           <h3 className="font-semibold">Category-wise Spending</h3>
-          <PieChart width={300} height={300}>
-            <Pie data={insights} dataKey="total" nameKey="_id" outerRadius={100}>
-              {insights.map((_, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+          {insights.length > 0 ? (
+            <PieChart width={300} height={300}>
+              <Pie data={insights} dataKey="total" nameKey="_id" outerRadius={100}>
+                {insights.map((_, index) => (
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          ) : (
+            <p className="text-gray-500">No data available</p>
+          )}
         </Card>
 
         {/* Bar Chart */}
         <Card>
           <h3 className="font-semibold">Spending Breakdown</h3>
-          <BarChart width={400} height={300} data={insights}>
-            <XAxis dataKey="_id" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="total" fill="#36A2EB" />
-          </BarChart>
+          {insights.length > 0 ? (
+            <BarChart width={400} height={300} data={insights}>
+              <XAxis dataKey="_id" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="total" fill="#36A2EB" />
+            </BarChart>
+          ) : (
+            <p className="text-gray-500">No data available</p>
+          )}
         </Card>
       </div>
     </div>

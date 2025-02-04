@@ -10,7 +10,7 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
 
     if (!token) {
         logger.warn('Authentication failed: No token provided')
-        return res.status(403).json({
+         res.status(403).json({
             message: 'Access denied, token missing'
         })
     }
@@ -18,7 +18,7 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
     jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
         if (err) {
             logger.warn('Authentication failed: : Invalid or expired token')
-            return res.status(403).json({
+             res.status(403).json({
                 message: 'Invalid or expired token'
             })
         }
