@@ -1,5 +1,6 @@
 import { Connection } from 'mongoose'
 import { RateLimiterMongo } from 'rate-limiter-flexible'
+import logger from '../utils/logger'
 
 export let rateLimiterMongo: null | RateLimiterMongo = null
 
@@ -30,8 +31,9 @@ export const checkRateLimit = async (ip: string): Promise<boolean> => {
     try {
         await rateLimiterMongo.consume(ip)
         return true
-    } catch (er) {
-        // logger.warn('rate limiter exceeedded')
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (er: unknown) {
+        logger.warn('rate limiter exceeedded')
         return false
     }
 }

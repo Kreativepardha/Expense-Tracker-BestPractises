@@ -6,8 +6,11 @@ import cors from 'cors'
 import logger from './utils/logger'
 import { errorHandler } from './utils/errorHandler'
 import { rateLimitMiddleware } from './middlewares/authMiddleware'
+import { connectDB } from './config/dbConfig'
 
 const app: Application = express()
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+connectDB()
 
 app.use(helmet())
 app.use(

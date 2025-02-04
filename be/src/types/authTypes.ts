@@ -1,13 +1,17 @@
-
 export interface RegisterData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
+    firstName: string
+    lastName: string
+    email: string
+    password: string
 }
-
 
 export interface LoginData {
     email: string
     password: string
+}
+
+export interface AuthenticatedUser {
+    userId: string
+    iat?: number
+    exp?: number
 }

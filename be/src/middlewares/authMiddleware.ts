@@ -3,11 +3,7 @@ import logger from '../utils/logger'
 import jwt from 'jsonwebtoken'
 import { config } from '../config/config'
 import { checkRateLimit } from '../config/rateLimiter'
-
-
-
-
-
+import { AuthenticatedUser } from '../types/authTypes'
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers['authorization']?.split(' ')[1]
@@ -20,32 +16,30 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
     }
 
     jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
-        if(err) {
-            logger.warn('Authentication failed: : Invalid or expired token');
+        if (err) {
+            logger.warn('Authentication failed: : Invalid or expired token')
             return res.status(403).json({
                 message: 'Invalid or expired token'
-            });
+            })
         }
 
-        req.user = decoded;
-        next();
-
+        req.user = decoded as AuthenticatedUser
+        next()
     })
 }
-    
 
- export const rateLimitMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    const ip = req.ip;
+export const rateLimitMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    const ip = req.ip
 
-    const isAllowed  = await checkRateLimit(ip);
+    const isAllowed = await checkRateLimit(ip as string)
 
-    if(!isAllowed) {
+    if (!isAllowed) {
         logger.warn(`Rate Limit exceedeed for IP:: ${ip}`)
-         res.status(429).json({
+        res.status(429).json({
             message: `Too many requests please try agian`
         })
         return
     }
 
-    next();
+    next()
 }

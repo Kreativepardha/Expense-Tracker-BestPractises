@@ -20,7 +20,6 @@ const colorizeLevel = (level: string) => {
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const consoleLogFormat = format.printf((info) => {
     const { level, message, timestamp, meta = {} } = info
 

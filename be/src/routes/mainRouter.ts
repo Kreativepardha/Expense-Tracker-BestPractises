@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { userRoute } from './userRoute'
-import { register } from 'module'
 
 const router = Router()
+
+router.use('/user', userRoute)
 
 export { router as mainRouter }
