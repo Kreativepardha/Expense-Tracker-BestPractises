@@ -1,48 +1,57 @@
 import { config } from '../config/config'
 import User from '../models/userModel'
-import { RegisterData } from '../types/authTypes'
+import { LoginData, RegisterData } from '../types/authTypes'
 import { CustomError } from '../utils/errorHandler'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 const generateToken = (userId: string) => {
-    const accessToken = jwt.sign({ userId }, config.JWT_SECRET, { expiresIn: '1h'})
-    return accessToken;
+    return jwt.sign({ userId }, config.JWT_SECRET, { expiresIn: '1h'})
 }
 
+const generateRefreshToken = (userId: string) => {
+    return jwt.sign({ userId }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+};
 
-export const registerService = async (Data: RegisterData) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { firstName, lastName, email, password } = Data
+export const registerService = async (data: RegisterData) => {
+    const { firstName, lastName, email, password } = data;
+
     const existingUser = await User.findOne({ email })
 
     if (existingUser) throw new CustomError('User Already exists', 400)
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    const hashedPass = bcrypt.hashSync(password, 10)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        const hashedPass = bcrypt.hashSync(password, 10)
     
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const user = new User({ firstName, lastName, email, password: hashedPass })
     await user.save()
 
-    const token = generateToken(user._id)
+    const accesstoken = generateToken(user._id)
+    const refreshToken = generateRefreshToken(user._id)
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return { message: 'User registered successfully', ...token }
+    return { message: 'User registered successfully', 
+        accesstoken, refreshToken
+     }
 }
 
-export const loginService = async({ email, password}: any) => {
+export const loginService = async(data: LoginData) => {
+    const { email, password } = data;
     const existingUser = await User.findOne({ email })
     if(!existingUser) throw new CustomError('Invalid Credentials', 400)
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         const isMatch = bcrypt.compareSync(password, existingUser.password)
         if(!isMatch) throw new CustomError('invalid credentials', 400)
-
-            return generateToken(existingUser._id)
+    
+            const accessToken = generateToken(existingUser._id);
+        const refreshToken = generateRefreshToken(existingUser._id);
+    
+        return { accessToken, refreshToken };
 }
 
-export const logoutService = async (token: string) => {
+export const logoutService = async () => {
     return {
         message: 'User LOgged Out'
     }
