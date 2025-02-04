@@ -11,7 +11,7 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export default function LoginComponent() {
+export default function Login() {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
   const { register, handleSubmit, formState: { errors } } = useForm({

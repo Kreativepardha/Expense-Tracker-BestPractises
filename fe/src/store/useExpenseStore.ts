@@ -20,8 +20,8 @@ interface ExpenseState {
 export const useExpenseStore = create<ExpenseState>((set, get) => ({
   expenses: [],
 
-  fetchExpenses: async () => {
-    const res = await api.get("/expenses");
+  fetchExpenses: async (filters = {}) => {
+    const res = await api.get("/expenses", { params: filters });
     set({ expenses: res.data.expenses });
   },
 

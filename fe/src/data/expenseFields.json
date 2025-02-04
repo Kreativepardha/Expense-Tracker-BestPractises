@@ -1,0 +1,9 @@
+{
+    "expenseFields": [
+      { "label": "Amount", "name": "amount", "type": "number", "placeholder": "Enter amount" },
+      { "label": "Category", "name": "category", "type": "text", "placeholder": "Enter category" },
+      { "label": "Date", "name": "date", "type": "date", "placeholder": "" },
+      { "label": "Description", "name": "description", "type": "text", "placeholder": "Enter description" }
+    ]
+  }
+  
