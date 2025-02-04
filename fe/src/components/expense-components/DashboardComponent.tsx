@@ -3,13 +3,13 @@ import { Input } from "../ui/input";
 import { useExpenseStore } from "../../store/useExpenseStore";
 import { Card } from "../ui/card";
 
-export default function Dashboard() {
+export default function DashboardComponent() {
   const { expenses, fetchExpenses } = useExpenseStore();
   const [filters, setFilters] = useState({ category: "", startDate: "", endDate: "" });
 
   useEffect(() => {
     fetchExpenses(filters);
-  }, [filters]);
+  }, [fetchExpenses, filters]);
 
   return (
     <div className="p-6">

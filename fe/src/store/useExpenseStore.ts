@@ -11,7 +11,7 @@ interface Expense {
 
 interface ExpenseState {
   expenses: Expense[];
-  fetchExpenses: () => Promise<void>;
+  fetchExpenses: (filters: { category: string; startDate: string; endDate: string }) => Promise<void>;
   addExpense: (expense: Omit<Expense, "_id">) => Promise<void>;
   updateExpense: (id: string, updatedExpense: Partial<Expense>) => Promise<void>;
   deleteExpense: (id: string) => Promise<void>;
@@ -20,7 +20,7 @@ interface ExpenseState {
 export const useExpenseStore = create<ExpenseState>((set, get) => ({
   expenses: [],
 
-  fetchExpenses: async (filters = {}) => {
+  fetchExpenses: async (filters = { category: "", startDate: "", endDate: "" }) => {
     const res = await api.get("/expenses", { params: filters });
     set({ expenses: res.data.expenses });
   },
