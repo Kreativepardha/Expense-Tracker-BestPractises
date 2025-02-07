@@ -4,7 +4,7 @@ import { initRateLimiter } from '../config/rateLimiter'
 
 const router = Router()
 
-router.use('/register', initRateLimiter, register)
+router.post('/register', register)
 router.use('/login', initRateLimiter, login)
 
 export { router as userRoute }
